@@ -1,6 +1,6 @@
 %define name docbook-dtd42-xml
 %define version 1.0
-%define release %mkrel 5
+%define release %mkrel 6
 %define dtdver 4.2
 %define mltyp xml
 
@@ -16,9 +16,8 @@ URL         	: http://www.oasis-open.org/docbook/
 
 Provides        : docbook-dtd-%{mltyp}
 PreReq		: fileutils
-Prereq		: sgml-common >= 0.6.3-2mdk
-# Why should this be needed ??? (fcrozat)
-# Prereq		: openjade >= 1.3.1-2mdk
+Requires(post)	: sgml-common
+Requires(postun)	: sgml-common
 
 BuildRoot   	: %{_tmppath}/%{name}-buildroot
 
@@ -29,20 +28,18 @@ BuildArch	: noarch
 
 %define sgmlbase %{_datadir}/sgml
 
-%Description
+%description
 The DocBook Document Type Definition (DTD) describes the syntax of
 technical documentation texts (articles, books and manual pages).
 This syntax is XML-compliant and is developed by the OASIS consortium.
 This is the version %{dtdver} of this DTD.
 
-
-%Prep
+%prep
 %setup -n docbook-xml-4.2 -q
 
-%Build
+%build
 
-
-%Install
+%install
 rm -rf $RPM_BUILD_ROOT
 DESTDIR=$RPM_BUILD_ROOT%{sgmlbase}/docbook/%{mltyp}-dtd-%{dtdver}
 mkdir -p $DESTDIR
@@ -55,51 +52,7 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/sgml
 touch $RPM_BUILD_ROOT%{_sysconfdir}/sgml/%{mltyp}-docbook-%{dtdver}.cat
 touch $RPM_BUILD_ROOT%{_sysconfdir}/sgml/catalog
 
-
-
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-
-%Files
-%defattr (-,root,root)
-%doc README ChangeLog
-%dir %{sgmlbase}/docbook/%{mltyp}-dtd-%{dtdver}
-%{sgmlbase}/docbook/%{mltyp}-dtd-%{dtdver}
-%ghost %config(noreplace) %{_sysconfdir}/sgml/%{mltyp}-docbook-%{dtdver}.cat
-%ghost %config(noreplace) %{_sysconfdir}/sgml/catalog
-
-# fix buggy postun script in all versions before 1.0-3mdk
-%triggerpostun -- docbook-dtd42-xml < 1.0-3mdk
-if [ -e %{sgmlbase}/openjade/catalog ]; then
-	%{_bindir}/xmlcatalog --sgml --noout --add \
-		%{_sysconfdir}/sgml/%{mltyp}-docbook-%{dtdver}.cat \
-		%{sgmlbase}/openjade/catalog
-fi
-
-if [ -e %{sgmlbase}/docbook/dsssl-stylesheets/catalog ]; then
-	%{_bindir}/xmlcatalog --sgml --noout --add \
-		%{_sysconfdir}/sgml/%{mltyp}-docbook-%{dtdver}.cat \
-		%{sgmlbase}/docbook/dsssl-stylesheets/catalog
-fi
-[ ! -e %{_sysconfdir}/sgml/%{mltyp}-docbook.cat ] && \
-	ln -s %{mltyp}-docbook-%{dtdver}.cat %{_sysconfdir}/sgml/%{mltyp}-docbook.cat
-
-CATALOG=%{sgmlbase}/docbook/xmlcatalog
-
-%{_bindir}/xmlcatalog --noout --add "delegatePublic" \
-	"-//OASIS//DTD DocBook XML V4.2//EN" \
-	"file:///usr/share/sgml/docbook/xml-dtd-4.2/catalog.xml" $CATALOG
-%{_bindir}/xmlcatalog --noout --add "rewriteSystem" \
-	"http://www.oasis-open.org/docbook/xml/4.2" \
-	"xml-dtd-4.2" $CATALOG
-%{_bindir}/xmlcatalog --noout --add "rewriteURI" \
-	"http://www.oasis-open.org/docbook/xml/4.2" \
-	"xml-dtd-4.2" $CATALOG
-
-
-%Post
+%post
 ##
 ## SGML catalog
 ##
@@ -143,7 +96,7 @@ CATALOG=%{sgmlbase}/docbook/xmlcatalog
 	"http://www.oasis-open.org/docbook/xml/4.2" \
 	"xml-dtd-4.2" $CATALOG
 
-%Postun
+%postun
 ##
 ## SGML catalog
 ##
@@ -191,3 +144,14 @@ if [ "$1" = "0" ]; then
 	   "xml-dtd-4.2" $CATALOG
   fi
 fi
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr (-,root,root)
+%doc README ChangeLog
+%dir %{sgmlbase}/docbook/%{mltyp}-dtd-%{dtdver}
+%{sgmlbase}/docbook/%{mltyp}-dtd-%{dtdver}
+%ghost %config(noreplace) %{_sysconfdir}/sgml/%{mltyp}-docbook-%{dtdver}.cat
+%ghost %config(noreplace) %{_sysconfdir}/sgml/catalog
