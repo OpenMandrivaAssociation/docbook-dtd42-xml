@@ -15,9 +15,8 @@ License   	: Artistic
 URL         	: http://www.oasis-open.org/docbook/
 
 Provides        : docbook-dtd-%{mltyp}
-PreReq		: fileutils
-Requires(post)	: sgml-common
-Requires(postun)	: sgml-common
+Requires(post)	: sgml-common coreutils
+Requires(postun)	: sgml-common coreutils
 
 BuildRoot   	: %{_tmppath}/%{name}-buildroot
 
