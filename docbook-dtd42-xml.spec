@@ -18,6 +18,7 @@ Provides        : docbook-dtd-%{mltyp}
 Requires(post)	: sgml-common coreutils
 Requires(postun)	: sgml-common coreutils
 
+BuildRoot   	: %{_tmppath}/%{name}-buildroot
 
 # Zip file downloadable at http://www.oasis-open.org/docbook/%{mltyp}/%{dtdver}
 Source0		: docbook-xml-4.2.tar.bz2 
