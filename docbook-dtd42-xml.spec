@@ -39,17 +39,17 @@ This is the version %{dtdver} of this DTD.
 %build
 
 %install
-rm -rf $RPM_BUILD_ROOT
-DESTDIR=$RPM_BUILD_ROOT%{sgmlbase}/docbook/%{mltyp}-dtd-%{dtdver}
+rm -rf %{buildroot}
+DESTDIR=%{buildroot}%{sgmlbase}/docbook/%{mltyp}-dtd-%{dtdver}
 mkdir -p $DESTDIR
 cp -r ent/ $DESTDIR
 install -m644 docbook.cat $DESTDIR/catalog
 install -m644 catalog.xml $DESTDIR
 install -m644 *.dtd $DESTDIR
 install -m644 *.mod $DESTDIR
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/sgml
-touch $RPM_BUILD_ROOT%{_sysconfdir}/sgml/%{mltyp}-docbook-%{dtdver}.cat
-touch $RPM_BUILD_ROOT%{_sysconfdir}/sgml/catalog
+mkdir -p %{buildroot}%{_sysconfdir}/sgml
+touch %{buildroot}%{_sysconfdir}/sgml/%{mltyp}-docbook-%{dtdver}.cat
+touch %{buildroot}%{_sysconfdir}/sgml/catalog
 
 %post
 ##
@@ -145,7 +145,7 @@ if [ "$1" = "0" ]; then
 fi
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr (-,root,root)
