@@ -5,13 +5,13 @@
 Summary:	XML document type definition for DocBook %{dtdver}
 Name:		docbook-dtd42-xml
 Version:	1.0
-Release:	23
+Release:	24
 Group:		Publishing
 License:	Artistic
 Url:		http://www.oasis-open.org/docbook/
 # Zip file downloadable at http://www.oasis-open.org/docbook/%{mltyp}/%{dtdver}
 Source0:   docbook-xml-4.2.tar.bz2 
-BuildArch:	noarch  
+BuildArch:	noarch
 Provides:	docbook-dtd-%{mltyp}
 Requires(post,postun):	sgml-common coreutils
 
@@ -36,7 +36,6 @@ install -m644 *.dtd $DESTDIR
 install -m644 *.mod $DESTDIR
 mkdir -p %{buildroot}/%{_sysconfdir}/sgml
 touch %{buildroot}/%{_sysconfdir}/sgml/%{mltyp}-docbook-%{dtdver}.cat
-touch %{buildroot}/%{_sysconfdir}/sgml/catalog
 
 %post
 ##
@@ -135,5 +134,4 @@ fi
 %doc README ChangeLog
 %{sgmlbase}/docbook/%{mltyp}-dtd-%{dtdver}
 %ghost %config(noreplace) %{_sysconfdir}/sgml/%{mltyp}-docbook-%{dtdver}.cat
-%ghost %config(noreplace) %{_sysconfdir}/sgml/catalog
 
