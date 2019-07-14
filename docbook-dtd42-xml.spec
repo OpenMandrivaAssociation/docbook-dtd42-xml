@@ -4,8 +4,8 @@
 
 Summary:	XML document type definition for DocBook %{dtdver}
 Name:		docbook-dtd42-xml
-Version:	1.0
-Release:	26
+Version:	4.2
+Release:	1
 Group:		Publishing
 License:	Artistic
 Url:		http://www.oasis-open.org/docbook/
